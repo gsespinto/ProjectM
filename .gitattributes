@@ -1,2 +1,26 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+*.umap
+*.uasset
+*.uproject
+*.wav
+*.fbx
+*.blend
+*.obj
+*.png
+*.jpg
+*.jpeg
+*.hdr
+*.exr
+*.mp3
+*.mp4
+*.mov
+*.psd
+*.mb
+*.tga
+*.cubemap
+*.tif
+*.bin.fbx
+*.upk
+*.udk
+*.duf
