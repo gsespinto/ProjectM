@@ -24,3 +24,4 @@
 *.upk
 *.udk
 *.duf
+Content/99_ExternalPackages/** filter=lfs diff=lfs merge=lfs -text
