@@ -21,6 +21,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 		void TakeDamage(float Amount);
 
+	UFUNCTION(BlueprintCallable)
+		void UpdateWalkSpeed(float Value);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

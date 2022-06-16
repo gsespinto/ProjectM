@@ -3,6 +3,7 @@
 
 #include "Enemy.h"
 #include "HealthComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -35,3 +36,7 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+void AEnemy::UpdateWalkSpeed(float Value)
+{
+	GetCharacterMovement()->MaxWalkSpeed = Value;
+}
