@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "Enemy.generated.h"
 
+class UAnimMontage;
 UCLASS()
 class PROJECTM_API AEnemy : public ACharacter
 {
@@ -18,24 +19,44 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 		class UHealthComponent* HealthComponent;
 
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
-		void TakeDamage(float Amount);
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+		class UBoxComponent* MeleeTrigger;
 
 	UFUNCTION(BlueprintCallable)
 		void UpdateWalkSpeed(float Value);
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void Knockback(FVector Force);
+
+	UFUNCTION(BlueprintCallable)
+		void TakeDamage(float Amount);
+
+	UFUNCTION(BlueprintCallable)
+		void MeleeAttackAction();
+
+	UFUNCTION(BlueprintCallable)
+		void BeginMeleeAttack();
+
+	UFUNCTION(BlueprintCallable)
+		void EndMeleeAttack();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+private:
+	UFUNCTION()
+		virtual void OnMeleeBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	UPROPERTY(EditDefaultsOnly)
+		UAnimMontage* MeleeAttackAnimation;
 
-	UFUNCTION(BlueprintImplementableEvent)
-		void Knockback(FVector Force);
-
+	UPROPERTY(EditDefaultsOnly)
+		UAnimMontage* DamageAnimation;
+	
+	UPROPERTY(EditAnywhere, Category = "Combat")
+		float MeleeDamage = 10.0f;
 };
