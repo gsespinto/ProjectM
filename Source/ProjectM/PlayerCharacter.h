@@ -212,7 +212,8 @@ protected:
 	UFUNCTION()
 		void OnInterationBoxOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 	
-	UObject* CurrentInteractable;
+	UPROPERTY(BlueprintReadOnly)
+		UObject* CurrentInteractable;
 	void CheckCurrentInteractable(UObject* Interactable);
 
 	virtual void InteractAction(); // Interact with the interactable closer to the player

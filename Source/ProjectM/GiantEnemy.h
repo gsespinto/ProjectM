@@ -38,4 +38,10 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Minions")
 		TSubclassOf<class AEnemy> MinionClass;
+
+	UPROPERTY(EditAnywhere, Category="Minions")
+		uint32 MinMinionsSpawn;
+
+	UPROPERTY(EditAnywhere, Category="Minions")
+		uint32 MaxMinionsSpawn;
 };

@@ -67,3 +67,16 @@ struct FQuestInfo : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		class UTexture2D* Icon;
 };
+
+USTRUCT(Blueprintable)
+struct FLevelInfo : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Level")
+		FString Name;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Level")
+		FName LevelToLoad;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Level")
+		class UTexture2D* Icon;
+};

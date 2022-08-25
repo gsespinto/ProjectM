@@ -35,5 +35,10 @@ void AGiantEnemy::SpawnMinions()
 		return;
 	}
 
-	GetWorld()->SpawnActor<ACharacter>(MinionClass, SpawnPoint->GetComponentLocation(), GetActorRotation(), FActorSpawnParameters());
+	int Amount = FMath::RandRange((int)MinMinionsSpawn, (int)MaxMinionsSpawn);
+
+	for (int i = 0; i < Amount; i++)
+	{
+		GetWorld()->SpawnActor<ACharacter>(MinionClass, SpawnPoint->GetComponentLocation(), GetActorRotation(), FActorSpawnParameters());
+	}
 }
