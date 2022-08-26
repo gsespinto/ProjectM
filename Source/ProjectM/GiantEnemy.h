@@ -44,4 +44,7 @@ private:
 
 	UPROPERTY(EditAnywhere, Category="Minions")
 		uint32 MaxMinionsSpawn;
+
+	UPROPERTY(EditAnywhere, Category = "Minions")
+		class UNiagaraSystem* VomitVfx;
 };

@@ -4,6 +4,7 @@
 #include "GiantEnemy.h"
 #include "Enemy.h"
 #include "Components/SceneComponent.h"
+#include "NiagaraFunctionLibrary.h"
 
 AGiantEnemy::AGiantEnemy()
 {
@@ -40,5 +41,10 @@ void AGiantEnemy::SpawnMinions()
 	for (int i = 0; i < Amount; i++)
 	{
 		GetWorld()->SpawnActor<ACharacter>(MinionClass, SpawnPoint->GetComponentLocation(), GetActorRotation(), FActorSpawnParameters());
+	}
+
+	if (VomitVfx != nullptr)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), VomitVfx, SpawnPoint->GetComponentLocation(), GetActorRotation(), FVector(1.0f), false);
 	}
 }
