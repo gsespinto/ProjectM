@@ -5,16 +5,45 @@
 #include "Enemy.h"
 #include "Components/SceneComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Components/BoxComponent.h"
+#include "Components/StaticMeshComponent.h"
 
 AGiantEnemy::AGiantEnemy()
 {
 	SpawnPoint = CreateDefaultSubobject<USceneComponent>("Spawn Point");
 	SpawnPoint->SetupAttachment(GetMesh(), TEXT("head"));
+
+	MeleeVisual = CreateDefaultSubobject<UStaticMeshComponent>("Melee Visual");
+	MeleeVisual->SetupAttachment(MeleeTrigger);
 }
 
 void AGiantEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void AGiantEnemy::MeleeAttackAction()
+{
+	Super::MeleeAttackAction();
+	MeleeVisual->SetVisibility(true);
+}
+
+void AGiantEnemy::BeginMeleeAttack()
+{
+	Super::BeginMeleeAttack();
+
+	if (StompVfx != nullptr)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), StompVfx, GetMesh()->GetSocketLocation(TEXT("ball_r")), GetActorRotation());
+	}
+
+}
+
+void AGiantEnemy::EndMeleeAttack()
+{
+	Super::EndMeleeAttack();
+
+	MeleeVisual->SetVisibility(false);
 }
 
 void AGiantEnemy::SpawnAction()
@@ -45,6 +74,6 @@ void AGiantEnemy::SpawnMinions()
 
 	if (VomitVfx != nullptr)
 	{
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), VomitVfx, SpawnPoint->GetComponentLocation(), GetActorRotation(), FVector(1.0f), false);
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), VomitVfx, SpawnPoint->GetComponentLocation(), GetActorRotation());
 	}
 }

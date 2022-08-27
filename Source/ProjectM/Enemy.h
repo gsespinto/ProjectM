@@ -35,17 +35,17 @@ public:
 		void TakeDamage(float Amount);
 
 	UFUNCTION(BlueprintCallable)
-		void MeleeAttackAction();
-
-	UFUNCTION(BlueprintCallable)
-		void BeginMeleeAttack();
-
-	UFUNCTION(BlueprintCallable)
-		void EndMeleeAttack();
+		virtual void MeleeAttackAction();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UFUNCTION(BlueprintCallable)
+		virtual void BeginMeleeAttack();
+
+	UFUNCTION(BlueprintCallable)
+		virtual void EndMeleeAttack();
 
 private:
 	UFUNCTION()

@@ -17,10 +17,17 @@ class PROJECTM_API AGiantEnemy : public AEnemy
 public:
 	AGiantEnemy();
 
+	virtual void MeleeAttackAction() override;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+		class UStaticMeshComponent* MeleeVisual;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	virtual void BeginMeleeAttack() override;
+	virtual void EndMeleeAttack() override;
 
 
 private:
@@ -47,4 +54,7 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Minions")
 		class UNiagaraSystem* VomitVfx;
+
+	UPROPERTY(EditAnywhere, Category = "Melee")
+		class UNiagaraSystem* StompVfx;
 };

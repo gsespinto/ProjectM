@@ -256,11 +256,12 @@ private:
 
 
 	// _____NOTEBOOK_____
+public:
+	UFUNCTION(BlueprintCallable)
+		void TickNotebookVisibility();
+
 protected:
 	UFUNCTION(BlueprintImplementableEvent)
 		void SetNotebookVisibility(bool bIsVisible); // Sets the visibility of the notebook tab
 	bool bIsNotebookVisible;
-
-private:
-	void TickNotebookVisibility();
 };
