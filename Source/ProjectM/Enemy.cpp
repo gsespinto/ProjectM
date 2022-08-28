@@ -65,13 +65,14 @@ void AEnemy::UpdateWalkSpeed(float Value)
 
 void AEnemy::MeleeAttackAction()
 {
-	if (MeleeAttackAnimation == nullptr)
+	if (MeleeAttackAnimations.Num() <= 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Missing melee attack animation reference in %s."), *GetName());
+		UE_LOG(LogTemp, Warning, TEXT("Missing melee attack animations in %s."), *GetName());
 		return;
 	}
 
-	GetMesh()->GetAnimInstance()->Montage_Play(MeleeAttackAnimation);
+	int Index = FMath::RandRange(0, MeleeAttackAnimations.Num() - 1);
+	GetMesh()->GetAnimInstance()->Montage_Play(MeleeAttackAnimations[Index]);
 }
 
 void AEnemy::BeginMeleeAttack()
