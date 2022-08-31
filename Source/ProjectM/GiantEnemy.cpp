@@ -3,10 +3,12 @@
 
 #include "GiantEnemy.h"
 #include "Enemy.h"
+#include "Projectile.h"
 #include "Components/SceneComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 AGiantEnemy::AGiantEnemy()
 {
@@ -71,6 +73,50 @@ void AGiantEnemy::SpawnMinions()
 	{
 		GetWorld()->SpawnActor<ACharacter>(MinionClass, SpawnPoint->GetComponentLocation(), GetActorRotation(), FActorSpawnParameters());
 	}
+
+	if (VomitVfx != nullptr)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), VomitVfx, SpawnPoint->GetComponentLocation(), GetActorRotation());
+	}
+}
+
+void AGiantEnemy::ProjectileAttackAction()
+{
+	if (ProjectileMontage == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Missing projectile montage on Giant Enemy!"));
+		return;
+	}
+
+	GetMesh()->GetAnimInstance()->Montage_Play(ProjectileMontage);
+	ProjectileDirection = (UGameplayStatics::GetPlayerPawn(GetWorld(), 0)->GetActorLocation() - SpawnPoint->GetComponentLocation()).GetSafeNormal();
+}
+
+void AGiantEnemy::ProjectileAttack()
+{
+	if (ProjectileClass == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Missing projectile class on Giant Enemy!"));
+		return;
+	}
+
+	AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileClass, SpawnPoint->GetComponentLocation(), GetActorRotation(), FActorSpawnParameters());
+
+	if (!Projectile)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Couldn't cast to projectile class."));
+		return;
+	}
+	
+	AActor* ProjectileVisuals = nullptr;
+	if (ProjectileClass != nullptr)
+	{
+		ProjectileVisuals = GetWorld()->SpawnActor<AActor>(VisualsClass, 
+			UGameplayStatics::GetPlayerPawn(GetWorld(), 0)->GetActorLocation() + FVector::DownVector * 90.0f, 
+			GetActorRotation(), FActorSpawnParameters());
+	}
+
+	Projectile->Launch(ProjectileDirection, ProjectileVisuals);
 
 	if (VomitVfx != nullptr)
 	{

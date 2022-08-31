@@ -22,12 +22,18 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 		class UStaticMeshComponent* MeleeVisual;
 
+	UFUNCTION(BlueprintCallable)
+		virtual void ProjectileAttackAction();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	virtual void BeginMeleeAttack() override;
 	virtual void EndMeleeAttack() override;
+
+	UFUNCTION(BlueprintCallable)
+		virtual void ProjectileAttack();
 
 
 private:
@@ -57,4 +63,15 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Melee")
 		class UNiagaraSystem* StompVfx;
+
+	UPROPERTY(EditAnywhere, Category = "Projectile")
+		TSubclassOf<class AProjectile> ProjectileClass;
+
+	UPROPERTY(EditAnywhere, Category="Projectile")
+		UAnimMontage* ProjectileMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Projectile")
+		TSubclassOf<AActor> VisualsClass;
+
+	FVector ProjectileDirection;
 };
