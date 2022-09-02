@@ -15,16 +15,15 @@ AProjectile::AProjectile()
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	SetRootComponent(Mesh);
-	Mesh->SetSimulatePhysics(true);
 
 	Trigger = CreateDefaultSubobject<USphereComponent>(TEXT("Trigger"));
 	Trigger->SetupAttachment(Mesh);
 }
 
-void AProjectile::Launch(FVector Direction, AActor* VisualsRef)
+void AProjectile::Launch(FVector _Target, AActor* _VisualsRef)
 {
-	Mesh->AddForce(Direction.GetSafeNormal() * Force);
-	ProjectileVisuals = VisualsRef;
+	Target = _Target;
+	ProjectileVisuals = _VisualsRef;
 }
 
 // Called when the game starts or when spawned
@@ -42,18 +41,7 @@ void AProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	TickDestroyTimer(DeltaTime);
-}
-
-void AProjectile::TickDestroyTimer(float DeltaTime)
-{
-	if (DestroyTimer > 0.0f)
-	{
-		DestroyTimer -= DeltaTime;
-		return;
-	}
-
-	Explode();
+	Move(DeltaTime);
 }
 
 void AProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -63,7 +51,6 @@ void AProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* Ot
 		Cast<APlayerCharacter>(OtherActor)->TakeDamage(Damage);
 		Explode();
 	}
-
 }
 
 void AProjectile::Explode()
@@ -77,5 +64,15 @@ void AProjectile::Explode()
 		ProjectileVisuals->Destroy();
 
 	Destroy();
+}
+
+void AProjectile::Move(float DeltaTime)
+{
+	if (FVector::Distance(GetActorLocation(), Target) < Speed * DeltaTime)
+	{
+		Explode();
+	}
+
+	SetActorLocation(GetActorLocation() + (Target - GetActorLocation()).GetSafeNormal() * Speed * DeltaTime);
 }
 

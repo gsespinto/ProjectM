@@ -89,7 +89,16 @@ void AGiantEnemy::ProjectileAttackAction()
 	}
 
 	GetMesh()->GetAnimInstance()->Montage_Play(ProjectileMontage);
-	ProjectileDirection = (UGameplayStatics::GetPlayerPawn(GetWorld(), 0)->GetActorLocation() - SpawnPoint->GetComponentLocation()).GetSafeNormal();
+	ProjectileTarget = UGameplayStatics::GetPlayerPawn(GetWorld(), 0)->GetActorLocation() + FVector::DownVector * 90.0f;
+
+	if (CurrentVisuals != nullptr)
+		CurrentVisuals->Destroy();
+
+	if (VisualsClass != nullptr)
+	{
+		CurrentVisuals = GetWorld()->SpawnActor<AActor>(VisualsClass, ProjectileTarget, GetActorRotation(), FActorSpawnParameters());
+	}
+
 }
 
 void AGiantEnemy::ProjectileAttack()
@@ -107,16 +116,8 @@ void AGiantEnemy::ProjectileAttack()
 		UE_LOG(LogTemp, Warning, TEXT("Couldn't cast to projectile class."));
 		return;
 	}
-	
-	AActor* ProjectileVisuals = nullptr;
-	if (ProjectileClass != nullptr)
-	{
-		ProjectileVisuals = GetWorld()->SpawnActor<AActor>(VisualsClass, 
-			UGameplayStatics::GetPlayerPawn(GetWorld(), 0)->GetActorLocation() + FVector::DownVector * 90.0f, 
-			GetActorRotation(), FActorSpawnParameters());
-	}
 
-	Projectile->Launch(ProjectileDirection, ProjectileVisuals);
+	Projectile->Launch(ProjectileTarget, CurrentVisuals);
 
 	if (VomitVfx != nullptr)
 	{

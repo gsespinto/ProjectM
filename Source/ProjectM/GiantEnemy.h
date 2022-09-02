@@ -73,5 +73,6 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 		TSubclassOf<AActor> VisualsClass;
 
-	FVector ProjectileDirection;
+	FVector ProjectileTarget;
+	AActor* CurrentVisuals;
 };

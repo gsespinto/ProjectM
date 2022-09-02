@@ -24,7 +24,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 		class USphereComponent* Trigger;
 
-	virtual void Launch(FVector Direction, AActor* VisualsRef = nullptr);
+	virtual void Launch(FVector Target, AActor* VisualsRef = nullptr);
 
 protected:
 	// Called when the game starts or when spawned
@@ -35,7 +35,7 @@ private:
 		virtual void OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UPROPERTY(EditAnywhere)
-		float Force = 100.0f;
+		float Speed = 100.0f;
 
 	UPROPERTY(EditAnywhere)
 		float Damage = 30.0f;
@@ -43,12 +43,14 @@ private:
 	UPROPERTY(EditAnywhere)
 		float DestroyTimer = 3.0f;
 
-	void TickDestroyTimer(float DeltaTime);
-
 	UPROPERTY(EditAnywhere)
 		class UNiagaraSystem* ExplosionVfx;
 
 	void Explode();
 
 	AActor* ProjectileVisuals;
+
+	void Move(float DeltaTime);
+
+	FVector Target;
 };
