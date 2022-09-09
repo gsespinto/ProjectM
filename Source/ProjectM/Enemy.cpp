@@ -6,6 +6,7 @@
 #include "Components/BoxComponent.h"
 #include "PlayerCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "SoundManager.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -29,6 +30,12 @@ void AEnemy::BeginPlay()
 	MeleeTrigger->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnMeleeBoxBeginOverlap);
 
 	EndMeleeAttack();
+
+	for (int i = 0; i < GetMesh()->GetMaterials().Num(); i++)
+	{
+		DynamicMaterials.Add(UMaterialInstanceDynamic::Create(GetMesh()->GetMaterial(i), this));
+		GetMesh()->SetMaterial(i, DynamicMaterials[i]);
+	}
 }
 
 void AEnemy::OnMeleeBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -48,6 +55,11 @@ void AEnemy::TakeDamage(float Amount)
 	if (DamageAnimation != nullptr)
 	{
 		GetMesh()->GetAnimInstance()->Montage_Play(DamageAnimation);
+	}
+
+	for (int i = 0; i < DynamicMaterials.Num(); i++)
+	{
+		DynamicMaterials[i]->SetScalarParameterValue("HP Percentage", HealthComponent->GetHPRatio());
 	}
 }
 
@@ -78,6 +90,7 @@ void AEnemy::MeleeAttackAction()
 void AEnemy::BeginMeleeAttack()
 {
 	MeleeTrigger->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	SoundManager::PlayRandomSoundAtLocation(GetWorld(), MeleeSfx, GetActorLocation());
 }
 
 void AEnemy::EndMeleeAttack()

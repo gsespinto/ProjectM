@@ -35,7 +35,6 @@ protected:
 	UFUNCTION(BlueprintCallable)
 		virtual void ProjectileAttack();
 
-
 private:
 	UFUNCTION(BlueprintCallable)
 		void SpawnAction();
@@ -73,6 +72,14 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 		TSubclassOf<AActor> VisualsClass;
 
+	UPROPERTY(EditAnywhere)
+		TArray<USoundBase*> VomitSfx;
+
+	UPROPERTY(EditAnywhere)
+		TArray<USoundBase*> StompSfx;
+
 	FVector ProjectileTarget;
 	AActor* CurrentVisuals;
+
+	void VomitFX();
 };

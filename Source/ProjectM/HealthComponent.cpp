@@ -44,3 +44,8 @@ bool UHealthComponent::IsDead()
 	return CurrentHP <= 0.0f;
 }
 
+float UHealthComponent::GetHPRatio()
+{
+	return CurrentHP / MaxHP;
+}
+

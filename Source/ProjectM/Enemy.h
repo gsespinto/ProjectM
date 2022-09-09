@@ -59,4 +59,9 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category = "Combat")
 		float MeleeDamage = 10.0f;
+
+	UPROPERTY(EditAnywhere)
+		TArray<USoundBase*> MeleeSfx;
+
+	TArray<UMaterialInstanceDynamic*> DynamicMaterials;
 };

@@ -29,6 +29,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 		bool IsDead(); // Returns true if CurrentHP < 0
 
+	UFUNCTION(BlueprintCallable)
+		float GetHPRatio();
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;		

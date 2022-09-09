@@ -9,6 +9,8 @@
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "SoundManager.h"
+#include "HealthComponent.h"
 
 AGiantEnemy::AGiantEnemy()
 {
@@ -22,6 +24,7 @@ AGiantEnemy::AGiantEnemy()
 void AGiantEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+
 }
 
 void AGiantEnemy::MeleeAttackAction()
@@ -39,6 +42,7 @@ void AGiantEnemy::BeginMeleeAttack()
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), StompVfx, GetMesh()->GetSocketLocation(TEXT("ball_r")), GetActorRotation());
 	}
 
+	SoundManager::PlayRandomSoundAtLocation(GetWorld(), StompSfx, GetMesh()->GetSocketLocation(TEXT("ball_r")));
 }
 
 void AGiantEnemy::EndMeleeAttack()
@@ -74,10 +78,7 @@ void AGiantEnemy::SpawnMinions()
 		GetWorld()->SpawnActor<ACharacter>(MinionClass, SpawnPoint->GetComponentLocation(), GetActorRotation(), FActorSpawnParameters());
 	}
 
-	if (VomitVfx != nullptr)
-	{
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), VomitVfx, SpawnPoint->GetComponentLocation(), GetActorRotation());
-	}
+	VomitFX();
 }
 
 void AGiantEnemy::ProjectileAttackAction()
@@ -119,8 +120,15 @@ void AGiantEnemy::ProjectileAttack()
 
 	Projectile->Launch(ProjectileTarget, CurrentVisuals);
 
+	VomitFX();
+}
+
+void AGiantEnemy::VomitFX()
+{
 	if (VomitVfx != nullptr)
 	{
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), VomitVfx, SpawnPoint->GetComponentLocation(), GetActorRotation());
 	}
+
+	SoundManager::PlayRandomSoundAtLocation(GetWorld(), VomitSfx, SpawnPoint->GetComponentLocation());
 }
