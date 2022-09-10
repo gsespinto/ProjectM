@@ -55,6 +55,9 @@ private:
 		TArray<UAnimMontage*> MeleeAttackAnimations;
 
 	UPROPERTY(EditDefaultsOnly)
+		TArray<UAnimMontage*> DeathAnimations;
+
+	UPROPERTY(EditDefaultsOnly)
 		UAnimMontage* DamageAnimation;
 	
 	UPROPERTY(EditAnywhere, Category = "Combat")

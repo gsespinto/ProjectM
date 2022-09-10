@@ -20,7 +20,6 @@
 #include "ItemActor.h"
 #include "DrawDebugHelpers.h"
 #include "Enemy.h"
-#include "ProjectMCharacter.h"
 #include "Sound/SoundConcurrency.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/StaticMeshComponent.h"
@@ -396,8 +395,6 @@ void APlayerCharacter::OnMeleeBoxBeginOverlap(UPrimitiveComponent* OverlappedCom
 	{
 		if (Cast<AEnemy>(OtherActor) != nullptr)
 			Cast<AEnemy>(OtherActor)->TakeDamage(Damage);
-		if (Cast<AProjectMCharacter>(OtherActor) != nullptr)
-			Cast<AProjectMCharacter>(OtherActor)->TakeDamage(Damage);
 
 		// Increase current attack streak
 		// Reset timer to stop streak

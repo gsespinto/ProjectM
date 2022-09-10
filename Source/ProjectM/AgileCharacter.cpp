@@ -15,10 +15,8 @@
 #include "Animation/AnimInstance.h"
 #include "CableComponent.h"
 #include "Components/BoxComponent.h"
-#include "ProjectMCharacter.h"
 #include "DrawDebugHelpers.h"
 #include "HealthComponent.h"
-#include "ProjectMCharacter.h"
 #include "Enemy.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -863,9 +861,6 @@ void AAgileCharacter::DealGrappleAttackDamage()
 	// Deal damage to GrappleAttackTarget
 	if (Cast<AEnemy>(GrappleAttackTarget) != nullptr)
 		Cast<AEnemy>(GrappleAttackTarget)->TakeDamage(GrappleDamage);
-
-	if (Cast<AProjectMCharacter>(GrappleAttackTarget) != nullptr)
-		Cast<AProjectMCharacter>(GrappleAttackTarget)->TakeDamage(GrappleDamage);
 
 	// Increase attack string
 	CurrentAttackString++;

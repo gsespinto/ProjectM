@@ -7,6 +7,7 @@
 #include "PlayerCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "SoundManager.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -50,6 +51,11 @@ void AEnemy::OnMeleeBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor*
 
 void AEnemy::TakeDamage(float Amount)
 {
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *GetName());
+
+	if (HealthComponent->IsDead())
+		return;
+
 	HealthComponent->TakeDamage(Amount);
 
 	if (DamageAnimation != nullptr)
@@ -60,6 +66,21 @@ void AEnemy::TakeDamage(float Amount)
 	for (int i = 0; i < DynamicMaterials.Num(); i++)
 	{
 		DynamicMaterials[i]->SetScalarParameterValue("HP Percentage", HealthComponent->GetHPRatio());
+	}
+
+	if (HealthComponent->IsDead())
+	{
+		if (DeathAnimations.Num() <= 0)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Missing death animations in %s."), *GetName());
+		}
+		else
+		{
+			int Index = FMath::RandRange(0, DeathAnimations.Num() - 1);
+			GetMesh()->GetAnimInstance()->Montage_Play(DeathAnimations[Index]);
+		}
+
+		GetCapsuleComponent()->Deactivate();
 	}
 }
 

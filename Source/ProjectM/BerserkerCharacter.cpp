@@ -6,7 +6,6 @@
 #include "Components/BoxComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "ProjectMCharacter.h"
 #include "HealthComponent.h"
 #include "CableComponent.h"
 #include "Enemy.h"
@@ -78,17 +77,6 @@ void ABerserkerCharacter::OnShoulderBashBeginOverlap(UPrimitiveComponent* Overla
 	{
 		FVector KnockDirection = OtherActor->GetActorLocation() - GetActorLocation();
 		KnockDirection.Normalize();
-
-		if (Cast<AProjectMCharacter>(OtherActor) != nullptr)
-		{
-			AProjectMCharacter* PM = Cast<AProjectMCharacter>(OtherActor);
-			PM->TakeDamage(BashDamage);
-
-			if (CurrentBashDistance <= BashDistance * (1 - BashDistancePercentToKnockback))
-			{
-				PM->GetCapsuleComponent()->AddForce(KnockDirection * BashKnockbackForce);
-			}
-		}
 
 		if (Cast<AEnemy>(OtherActor) != nullptr)
 		{
