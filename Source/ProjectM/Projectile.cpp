@@ -6,6 +6,7 @@
 #include "Components/SphereComponent.h"
 #include "PlayerCharacter.h"
 #include "NiagaraFunctionLibrary.h"
+#include "SoundManager.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -59,6 +60,8 @@ void AProjectile::Explode()
 	{
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ExplosionVfx, GetActorLocation(), GetActorRotation());
 	}
+
+	SoundManager::PlayRandomSoundAtLocation(GetWorld(), ImpactSfx, GetActorLocation());
 
 	if (ProjectileVisuals != nullptr)
 		ProjectileVisuals->Destroy();

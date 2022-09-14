@@ -78,7 +78,7 @@ void AGiantEnemy::SpawnMinions()
 		GetWorld()->SpawnActor<ACharacter>(MinionClass, SpawnPoint->GetComponentLocation(), GetActorRotation(), FActorSpawnParameters());
 	}
 
-	VomitFX();
+	PlayVomitVFX();
 }
 
 void AGiantEnemy::ProjectileAttackAction()
@@ -120,15 +120,28 @@ void AGiantEnemy::ProjectileAttack()
 
 	Projectile->Launch(ProjectileTarget, CurrentVisuals);
 
-	VomitFX();
+	PlayVomitVFX();
 }
 
-void AGiantEnemy::VomitFX()
+void AGiantEnemy::PlayVomitVFX()
 {
 	if (VomitVfx != nullptr)
 	{
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), VomitVfx, SpawnPoint->GetComponentLocation(), GetActorRotation());
 	}
+}
 
+void AGiantEnemy::PlayVomitSFX()
+{
 	SoundManager::PlayRandomSoundAtLocation(GetWorld(), VomitSfx, SpawnPoint->GetComponentLocation());
+}
+
+void AGiantEnemy::TakeDamage(float Amount)
+{
+	Super::TakeDamage(Amount);
+
+	if (!HealthComponent->IsDead())
+		return;
+
+	EndMeleeAttack();
 }

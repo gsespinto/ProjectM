@@ -32,7 +32,7 @@ public:
 		void Knockback(FVector Force);
 
 	UFUNCTION(BlueprintCallable)
-		void TakeDamage(float Amount);
+		virtual void TakeDamage(float Amount);
 
 	UFUNCTION(BlueprintCallable)
 		virtual void MeleeAttackAction();

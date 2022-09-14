@@ -53,4 +53,7 @@ private:
 	void Move(float DeltaTime);
 
 	FVector Target;
+
+	UPROPERTY(EditAnywhere)
+		TArray<USoundBase*> ImpactSfx;
 };

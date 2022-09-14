@@ -80,6 +80,7 @@ void AEnemy::TakeDamage(float Amount)
 			GetMesh()->GetAnimInstance()->Montage_Play(DeathAnimations[Index]);
 		}
 
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		GetCapsuleComponent()->Deactivate();
 	}
 }

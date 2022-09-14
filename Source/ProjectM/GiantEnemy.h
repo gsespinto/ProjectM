@@ -25,6 +25,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 		virtual void ProjectileAttackAction();
 
+	virtual void TakeDamage(float Amount) override;
+
+	UFUNCTION(BlueprintCallable)
+		void PlayVomitSFX();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -81,5 +86,5 @@ private:
 	FVector ProjectileTarget;
 	AActor* CurrentVisuals;
 
-	void VomitFX();
+	void PlayVomitVFX();
 };
