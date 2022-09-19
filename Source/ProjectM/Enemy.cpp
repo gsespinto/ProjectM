@@ -112,7 +112,7 @@ void AEnemy::MeleeAttackAction()
 void AEnemy::BeginMeleeAttack()
 {
 	MeleeTrigger->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	SoundManager::PlayRandomSoundAtLocation(GetWorld(), MeleeSfx, GetActorLocation());
+	SoundManager::PlayRandomSoundAtLocation(GetWorld(), MeleeSfx, GetActorLocation(), SoundAttenuation);
 }
 
 void AEnemy::EndMeleeAttack()

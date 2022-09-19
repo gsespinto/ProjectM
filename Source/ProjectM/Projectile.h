@@ -56,4 +56,8 @@ private:
 
 	UPROPERTY(EditAnywhere)
 		TArray<USoundBase*> ImpactSfx;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+		class USoundAttenuation* SoundAttenuation;
+
 };

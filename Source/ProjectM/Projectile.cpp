@@ -61,7 +61,7 @@ void AProjectile::Explode()
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ExplosionVfx, GetActorLocation(), GetActorRotation());
 	}
 
-	SoundManager::PlayRandomSoundAtLocation(GetWorld(), ImpactSfx, GetActorLocation());
+	SoundManager::PlayRandomSoundAtLocation(GetWorld(), ImpactSfx, GetActorLocation(), SoundAttenuation);
 
 	if (ProjectileVisuals != nullptr)
 		ProjectileVisuals->Destroy();

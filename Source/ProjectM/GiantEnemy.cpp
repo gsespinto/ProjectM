@@ -42,7 +42,7 @@ void AGiantEnemy::BeginMeleeAttack()
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), StompVfx, GetMesh()->GetSocketLocation(TEXT("ball_r")), GetActorRotation());
 	}
 
-	SoundManager::PlayRandomSoundAtLocation(GetWorld(), StompSfx, GetMesh()->GetSocketLocation(TEXT("ball_r")));
+	SoundManager::PlayRandomSoundAtLocation(GetWorld(), StompSfx, GetMesh()->GetSocketLocation(TEXT("ball_r")), SoundAttenuation);
 }
 
 void AGiantEnemy::EndMeleeAttack()
@@ -133,7 +133,7 @@ void AGiantEnemy::PlayVomitVFX()
 
 void AGiantEnemy::PlayVomitSFX()
 {
-	SoundManager::PlayRandomSoundAtLocation(GetWorld(), VomitSfx, SpawnPoint->GetComponentLocation());
+	SoundManager::PlayRandomSoundAtLocation(GetWorld(), VomitSfx, SpawnPoint->GetComponentLocation(), SoundAttenuation);
 }
 
 void AGiantEnemy::TakeDamage(float Amount)
