@@ -47,7 +47,7 @@ protected:
 	UFUNCTION(BlueprintCallable)
 		virtual void EndMeleeAttack();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, Category = "SFX")
 		class USoundAttenuation* SoundAttenuation;
 
 private:
@@ -66,7 +66,7 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Combat")
 		float MeleeDamage = 10.0f;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "SFX")
 		TArray<USoundBase*> MeleeSfx;
 
 	TArray<UMaterialInstanceDynamic*> DynamicMaterials;
