@@ -70,6 +70,8 @@ void AEnemy::TakeDamage(float Amount)
 
 	if (HealthComponent->IsDead())
 	{
+		GetMesh()->GetAnimInstance()->StopAllMontages(0.0f);
+		
 		if (DeathAnimations.Num() <= 0)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Missing death animations in %s."), *GetName());
