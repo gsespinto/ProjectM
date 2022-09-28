@@ -8,6 +8,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "SoundManager.h"
 #include "Components/CapsuleComponent.h"
+#include "AIController.h"
+#include "BrainComponent.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -37,6 +39,18 @@ void AEnemy::BeginPlay()
 		DynamicMaterials.Add(UMaterialInstanceDynamic::Create(GetMesh()->GetMaterial(i), this));
 		GetMesh()->SetMaterial(i, DynamicMaterials[i]);
 	}
+
+	CurrentMeleeCooldown = MeleeCooldown;
+}
+
+void AEnemy::DeactivateAI()
+{
+	AAIController* AIController = Cast<AAIController>(GetController());
+
+	if (AIController == nullptr)
+		return;
+
+	AIController->GetBrainComponent()->StopLogic(TEXT("Character is dead."));
 }
 
 void AEnemy::OnMeleeBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -58,11 +72,6 @@ void AEnemy::TakeDamage(float Amount)
 
 	HealthComponent->TakeDamage(Amount);
 
-	if (DamageAnimation != nullptr)
-	{
-		GetMesh()->GetAnimInstance()->Montage_Play(DamageAnimation);
-	}
-
 	for (int i = 0; i < DynamicMaterials.Num(); i++)
 	{
 		DynamicMaterials[i]->SetScalarParameterValue("HP Percentage", HealthComponent->GetHPRatio());
@@ -70,7 +79,8 @@ void AEnemy::TakeDamage(float Amount)
 
 	if (HealthComponent->IsDead())
 	{
-		GetMesh()->GetAnimInstance()->StopAllMontages(0.0f);
+		DeactivateAI();
+		SoundManager::PlayRandomSoundAtLocation(GetWorld(), DeathSfx, GetActorLocation(), SoundAttenuation);
 		
 		if (DeathAnimations.Num() <= 0)
 		{
@@ -85,6 +95,15 @@ void AEnemy::TakeDamage(float Amount)
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		GetCapsuleComponent()->Deactivate();
 	}
+	else
+	{
+		if (DamageAnimation != nullptr)
+		{
+			GetMesh()->GetAnimInstance()->Montage_Play(DamageAnimation);
+		}
+
+		SoundManager::PlayRandomSoundAtLocation(GetWorld(), DamagedSfx, GetActorLocation(), SoundAttenuation);
+	}
 }
 
 // Called every frame
@@ -92,6 +111,7 @@ void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	TickMeleeCooldown(DeltaTime);
 }
 
 void AEnemy::UpdateWalkSpeed(float Value)
@@ -120,4 +140,18 @@ void AEnemy::BeginMeleeAttack()
 void AEnemy::EndMeleeAttack()
 {
 	MeleeTrigger->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	CurrentMeleeCooldown = MeleeCooldown;
+}
+
+bool AEnemy::IsInMeleeCooldown()
+{
+	return CurrentMeleeCooldown > 0.0f;
+}
+
+void AEnemy::TickMeleeCooldown(float DeltaTime)
+{
+	if (!IsInMeleeCooldown())
+		return;
+
+	CurrentMeleeCooldown -= DeltaTime;
 }

@@ -79,4 +79,6 @@ struct FLevelInfo : public FTableRowBase
 		FName LevelToLoad;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Level")
 		class UTexture2D* Icon;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Level")
+		bool Unlocked;
 };

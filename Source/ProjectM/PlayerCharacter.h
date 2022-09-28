@@ -173,6 +173,15 @@ private:
 	float currentTimeToStopAttackStreak;
 	void TickStopAttackStreak(float DeltaTime); // Demish ending combo timer, after which it'll stop the combo
 
+	UPROPERTY(EditAnywhere, Category = "SFX")
+		TArray<USoundBase*> DeathSfx;
+
+	UPROPERTY(EditAnywhere, Category = "SFX")
+		TArray<USoundBase*> ImpactSfx;
+
+	UPROPERTY(EditAnywhere, Category = "SFX")
+		TArray<USoundBase*> DamagedSfx;
+
 
 
 	// _____POSSESS_____

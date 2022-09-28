@@ -23,6 +23,7 @@
 #include "Sound/SoundConcurrency.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/StaticMeshComponent.h"
+#include "SoundManager.h"
 
 //////////////////////////////////////////////////////////////////////////
 // APlayerCharacter
@@ -258,9 +259,11 @@ void APlayerCharacter::TakeDamage(float Amount)
 	if (!HealthComponent->IsDead())
 	{
 		GetMesh()->GetAnimInstance()->Montage_Play(HitMontage);
+		SoundManager::PlayRandomSoundAtLocation(GetWorld(), DamagedSfx, GetActorLocation());
 	}
 	else
 	{
+		SoundManager::PlayRandomSoundAtLocation(GetWorld(), DeathSfx, GetActorLocation());
 		SetInventoryVisibility(false);
 		SetNotebookVisibility(false);
 	}
@@ -393,8 +396,11 @@ void APlayerCharacter::OnMeleeBoxBeginOverlap(UPrimitiveComponent* OverlappedCom
 
 	if (OtherActor->ActorHasTag(TEXT("Enemy")))
 	{
-		if (Cast<AEnemy>(OtherActor) != nullptr)
-			Cast<AEnemy>(OtherActor)->TakeDamage(Damage);
+		if (Cast<AEnemy>(OtherActor) == nullptr)
+			return;
+		
+		Cast<AEnemy>(OtherActor)->TakeDamage(Damage);
+		SoundManager::PlayRandomSoundAtLocation(GetWorld(), ImpactSfx, GetActorLocation());
 
 		// Increase current attack streak
 		// Reset timer to stop streak

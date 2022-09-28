@@ -50,6 +50,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "SFX")
 		class USoundAttenuation* SoundAttenuation;
 
+	UFUNCTION(BlueprintCallable)
+		bool IsInMeleeCooldown();
+
 private:
 	UFUNCTION()
 		virtual void OnMeleeBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
@@ -69,5 +72,19 @@ private:
 	UPROPERTY(EditAnywhere, Category = "SFX")
 		TArray<USoundBase*> MeleeSfx;
 
+	UPROPERTY(EditAnywhere, Category = "SFX")
+		TArray<USoundBase*> DamagedSfx;
+
+	UPROPERTY(EditAnywhere, Category = "SFX")
+		TArray<USoundBase*> DeathSfx;
+
 	TArray<UMaterialInstanceDynamic*> DynamicMaterials;
+	
+	void DeactivateAI();
+
+	UPROPERTY(EditAnywhere)
+		float MeleeCooldown = 2.0f;
+	float CurrentMeleeCooldown;
+
+	void TickMeleeCooldown(float DeltaTime);
 };
