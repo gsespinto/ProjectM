@@ -80,7 +80,8 @@ void AEnemy::TakeDamage(float Amount)
 	if (HealthComponent->IsDead())
 	{
 		DeactivateAI();
-		SoundManager::PlayRandomSoundAtLocation(GetWorld(), DeathSfx, GetActorLocation(), SoundAttenuation);
+
+		SoundManager::PlayRandomSoundAttached(DeathSfx, GetMesh(), FName("head"), SoundAttenuation);
 		
 		if (DeathAnimations.Num() <= 0)
 		{
@@ -91,6 +92,8 @@ void AEnemy::TakeDamage(float Amount)
 			int Index = FMath::RandRange(0, DeathAnimations.Num() - 1);
 			GetMesh()->GetAnimInstance()->Montage_Play(DeathAnimations[Index]);
 		}
+
+		EndMeleeAttack();
 
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		GetCapsuleComponent()->Deactivate();

@@ -14,5 +14,6 @@ public:
 	~SoundManager();
 
 	static bool PlayRandomSoundAtLocation(const UObject* WorldObjectContext, TArray<class USoundBase*> Sounds, FVector Location, class USoundAttenuation* AttenuationSettings = nullptr);
+	static bool PlayRandomSoundAttached(TArray<class USoundBase*> Sounds, class USceneComponent* AttachToComponent, FName Socket = "", class USoundAttenuation* AttenuationSettings = nullptr);
 	static bool PlayRandomSoundAudioComponent(class UAudioComponent* AudioComponent, TArray<class USoundBase*> Sounds);
 };

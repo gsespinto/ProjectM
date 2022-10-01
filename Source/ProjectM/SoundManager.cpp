@@ -35,6 +35,28 @@ bool SoundManager::PlayRandomSoundAtLocation(const UObject* WorldObjectContext, 
 	return true;
 }
 
+bool SoundManager::PlayRandomSoundAttached(TArray<class USoundBase*> Sounds, USceneComponent* AttachToComponent, FName Socket, USoundAttenuation* AttenuationSettings)
+{
+	if (AttachToComponent)
+	{
+		return false;
+	}
+
+	if (Sounds.Num() <= 0)
+	{
+		return false;
+	}
+
+	int Index = FMath::RandRange(0, Sounds.Num() - 1);
+
+	if (AttenuationSettings != nullptr)
+		UGameplayStatics::SpawnSoundAttached(Sounds[Index], AttachToComponent, Socket, FVector::ZeroVector, EAttachLocation::KeepRelativeOffset, false, 1.0f, 1.0f, 0.0f, AttenuationSettings);
+	else
+		UGameplayStatics::SpawnSoundAttached(Sounds[Index], AttachToComponent, Socket, FVector::ZeroVector, EAttachLocation::KeepRelativeOffset);
+
+	return true;
+}
+
 bool SoundManager::PlayRandomSoundAudioComponent(UAudioComponent* AudioComponent, TArray<class USoundBase*> Sounds)
 {
 	if (AudioComponent == nullptr)
