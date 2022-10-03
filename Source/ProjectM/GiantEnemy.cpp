@@ -118,7 +118,7 @@ void AGiantEnemy::ProjectileAttack()
 		return;
 	}
 
-	Projectile->Launch(ProjectileTarget, CurrentVisuals);
+	Projectile->Launch(ProjectileTarget, CurrentVisuals, this);
 
 	PlayVomitVFX();
 }

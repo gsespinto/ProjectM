@@ -55,8 +55,8 @@ UENUM(BlueprintType)
 enum class EResidueHint : uint8 {
 	UNKNOWN = 0 UMETA(DisplayName = "???"),
 	SLIME = 1 UMETA(DisplayName = "Slime"),
-	BROWN_POOP = 2 UMETA(DisplayName = "Brown Poop"),
-	WHITE_POOP = 3 UMETA(DisplayName = "White Poop"),
+	BROWN_POOP = 2 UMETA(DisplayName = "Mineral"),
+	WHITE_POOP = 3 UMETA(DisplayName = "Blood"),
 	ACID = 4 UMETA(DisplayName = "Acid"),
 };
 

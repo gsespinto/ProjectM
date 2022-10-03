@@ -5,6 +5,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/SphereComponent.h"
 #include "PlayerCharacter.h"
+#include "Enemy.h"
 #include "NiagaraFunctionLibrary.h"
 #include "SoundManager.h"
 
@@ -21,10 +22,11 @@ AProjectile::AProjectile()
 	Trigger->SetupAttachment(Mesh);
 }
 
-void AProjectile::Launch(FVector _Target, AActor* _VisualsRef)
+void AProjectile::Launch(FVector _Target, AActor* _VisualsRef, AActor* _Owner)
 {
 	Target = _Target;
 	ProjectileVisuals = _VisualsRef;
+	OwnerActor = _Owner;
 }
 
 // Called when the game starts or when spawned
@@ -50,6 +52,12 @@ void AProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* Ot
 	if (OtherActor->ActorHasTag("Player"))
 	{
 		Cast<APlayerCharacter>(OtherActor)->TakeDamage(Damage);
+		Explode();
+	}
+
+	if (OtherActor->ActorHasTag("Enemy") && OtherActor != OwnerActor)
+	{
+		Cast<AEnemy>(OtherActor)->TakeDamage(Damage);
 		Explode();
 	}
 }

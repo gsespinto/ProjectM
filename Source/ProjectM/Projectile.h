@@ -24,7 +24,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 		class USphereComponent* Trigger;
 
-	virtual void Launch(FVector Target, AActor* VisualsRef = nullptr);
+	virtual void Launch(FVector Target, AActor* VisualsRef = nullptr, AActor* Owner = nullptr);
 
 protected:
 	// Called when the game starts or when spawned
@@ -60,4 +60,5 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 		class USoundAttenuation* SoundAttenuation;
 
+	AActor* OwnerActor;
 };
